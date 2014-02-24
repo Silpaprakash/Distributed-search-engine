@@ -1,0 +1,27 @@
+ <style>
+        body{
+            text-align: center;
+        }
+        #PriceBox {
+    display: none;   
+}
+        input{
+            margin-top:20px;
+            font-size:16px;
+            font-weight: bold;
+            padding:5px 10px;
+        }
+
+        #box{
+		margin: 50px auto;
+		width: 500px;
+		height: 100px;
+		color: #fff;
+		padding: 10px;
+		background: orange;
+		position: fixed;
+		left: 100px;
+	}
+
+    </style>
+   

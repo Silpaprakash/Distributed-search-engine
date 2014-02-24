@@ -1,0 +1,166 @@
+﻿	/* 3D Transformations inside webkit browsers */
+	
+	/* Some basic styles first of all */
+	
+	body {
+		background:					white;
+		margin:						0;
+		padding:					0;
+		font-family:				helvetica, arial, sans-serif;
+		font-size:					62.5%;
+	}
+	
+	#container {
+		position:					relative;
+		width:						500px;
+		margin:						0;
+		padding:					0;
+		margin:						auto;
+		padding-top:				100px;
+	}
+	
+	/* The cube */
+	
+	#cube {
+		width:						500px;
+		height:						500px;
+		position:					relative;
+	}
+	
+	/* Faces */
+	
+	#face1, #face2, #face3 {
+		width:						400px;
+		height:						400px;
+		padding:					50px;
+		border:						20px solid white;
+		background:					#cdcdcd;
+		font-size:					1.3em;
+		color:						white;
+		line-height:				1.5em;
+	}
+	
+	#face1 {
+		background:					#cdcdcd url(red.png) no-repeat top left;
+	}
+	
+	#face2 {
+		background:					#cdcdcd url(green.png) no-repeat top left;
+	}
+	
+	#face3 {
+		background:					#cdcdcd url(blue.png) no-repeat top left;
+	}
+	
+	/* This is all about the buttons */
+	
+	.face ul {
+		position:					absolute;
+		bottom:						0px;
+		left:						-30px;
+		width:						480px;
+	}
+	
+	.face ul li {
+		margin:						0;
+		width:						150px;
+		height:						100px;
+		list-style:					none;
+		float:						left;
+	}
+	
+	.face ul li a {
+		display:					block;
+		width:						150px;
+		height:						100px;
+		overflow:					hidden;
+		text-decoration:			none;
+		text-indent:				-10000px;
+	}
+	
+	#face2 ul li:first-child a {
+		background:					transparent url(moreinfo.png) no-repeat top left;
+	}
+	
+	#face2 ul li:last-child {
+		float:						right;
+	}
+	
+	#face2 ul li:last-child a {
+		background:					transparent url(search.png) no-repeat top right;
+	}
+	
+	#face1 ul li {
+		float:						right;
+	}
+	
+	#face1 ul li a {
+		background:					transparent url(home-right.png) no-repeat top left;
+	}
+	
+	#face3 ul li a {
+		background:					transparent url(home-left.png) no-repeat top left;
+	}
+	
+	/* That's the end of the buttons - we could have made life easier by giving each a unique id, but it would have been less fun! */
+	
+	
+	/* Classes to rotate the cube */
+	
+	.rotateleft {
+		-webkit-transform: 			rotateY(90deg);
+	}
+	
+	.rotateright {
+		-webkit-transform: 			rotateY(-90deg);
+	}
+	
+	/* General formatting */
+	
+	label {
+		display:					block;
+		font-size:					1em;
+		margin-bottom:				10px;
+	}
+	
+	label * {
+		padding:					5px;
+		font-size:					1.2em;
+		display:					block;
+		width:						380px;
+	}
+	
+	label textarea {
+		height:						60px;
+	}
+	
+	h2 {
+		font-weight:				normal;
+		text-transform:				uppercase;
+	}
+	
+	/* note we can use advanced CSS selectors as we're only interested in webkit browsers! */
+	input[type=submit] {
+		float:						right;
+		margin-right:				10px;
+		background:					#d4be0f;
+		/* Check out the fancy glossy buttons tutorial in Web Designer last month for more info on what the code below means */
+		-webkit-box-shadow:
+			3px 3px 6px rgba(0, 0, 0, .4),
+			0px 0px 3px rgba(0, 0, 0, .2),
+			inset 0px 15px 2px rgba(234, 221, 175, .8),
+			inset 0px 25px 25px #edcf65;
+		-webkit-border-radius: 		5px;	
+		color:						#333333;	
+		padding:					10px 30px 10px 30px;
+		border:						1px solid #af8a0c;
+	}
+	
+	.rotateanddrop {
+		margin-right:				20px;
+		margin-bottom:				20px;
+		float:						left;
+		/* A cheeky bit of transformation and shadow to make our image a little more interesting */
+		-webkit-transform:			rotateZ(-5deg) translateY(10px);
+		-webkit-box-shadow:			0px 0px 5px #000000;	
+	}

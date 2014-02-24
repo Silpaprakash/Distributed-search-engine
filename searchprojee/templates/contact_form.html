@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>DJANGO SEARCH ENGINE</title>
+		{% load staticfiles %}
+		<link href="{% static "searchprojee/styles/end-screen.css" %}" rel="stylesheet" type="text/css">
+		<script src="{% static "searchprojee/scripts/jquery.js" %}"></script>
+		<script>
+			// We'll use a script to set the class to apply
+			$(document).ready(function(){
+				$(".face ul li a").click(function(){
+					parentid = $(this).parents("div").attr("id");
+					href=$(this).attr("href");
+					switch(parentid) {
+						case "face2":
+							if (href=="#face3") 
+								$("#cube").addClass("rotateright");
+							else
+								$("#cube").addClass("rotateleft");
+							break;
+						default:
+							$("#cube").removeClass("rotateleft").removeClass("rotateright");
+							break;
+					}
+					return false;
+				});
+			});
+		</script>
+	</head>
+	<body style="height: 1427px">
+		<div id="container">
+			<div id="cube">
+				<div class="face" id="face1">
+					<h2>SEARCH RESULTS </h2>
+					<p>&nbsp;</p>
+					<div style="border : solid 2px #ff0000; background : #A32F26; color : #ffffff; padding : 4px; width : 280px; height : 115px; overflow : auto; ">
+
+<h2>RANK</h2>
+					{% if rank %}
+        <p style="width: 241px">
+            {% for v in rank %}
+           {{ v }} 
+            {% endfor %}
+        </p>
+    {% endif %} </div><h2> CRAWLING TIME AND RANKING TIME</h2>
+    <div style="border : 2px solid #000000; background : #A32F26; color : #ffffff; padding : 4px; width : 280px; height : 115px; overflow : auto; ">
+
+
+					{% if time %}
+        {% endif %}
+    	{% if rank_time %}
+        <p style="width: 241px">
+            
+           {{ rank_time }} 
+            
+        </p>
+    {% endif %} <br> </div>
+					<ul>
+						<li><a href="#face2" title="Click here to ...">Home</a></li>
+					</ul>
+					
+				</div>
+				<div class="face" id="face2">
+					<h2>SEARCH ENGINE</h2>
+					
+					 INDEX<br>{% if errors %}
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}<div style="border : 2px solid #000000; background : #939F24; color : #ffffff; padding : 4px; width : 409px; height : 271px; overflow : auto; ">
+
+
+					{% if value %}
+        <p style="width: 241px">
+            {% for v in value %}
+           {{ v }} 
+            {% endfor %}
+        </p>
+    {% endif %} </div>
+					<ul>
+						<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#face1" title="Click here to ...">More details</a></li>
+						<li>&nbsp;&nbsp;
+						<a href="#face3" title="Click here to ...">Search here</a></li>
+					</ul>
+				</div>
+				<div class="face" id="face3">
+					<h2>BASIC SEARCH ENGINE</h2>
+					<form action="" method="post">
+        {% csrf_token %}
+        <p>Seed page: 
+		<input type="text" name="seed" style="width: 169px; height: 29px"></p>
+        <p>maximum pages: 
+		<input type="text" name="pages" style="width: 145px; height: 33px"></p>
+        <p>maximum depth 
+		<input type="text" name="depth" style="width: 166px; height: 34px"></p>
+						<p>Hadoop processing:<input checked="true" name="Radio1" type="radio" value="Hadoop processing">
+						<br>Basic search engine:<input name="Radio1" type="radio" value="Basic search engine"><br>
+						Parallel processing:<input name="Radio1" type="radio" value="Parallel processing"></p>
+        &nbsp;<input type="submit" value="SEARCH"></form>					<ul>
+						<li><a href="#face2" title="Click here to ...">Home</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

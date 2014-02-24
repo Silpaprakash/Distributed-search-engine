@@ -1,0 +1,34 @@
+ <html>
+<head>
+    <title>SEARCH ENGINE </title>
+</head>
+<body>
+    <h1>SIMPLE SEARCH ENGINE</h1>
+
+    
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <p>Seed page: <input type="text" name="seed"></p>
+        <p>maximum pages: <input type="text" name="pages"></p>
+        <p>maximum depth <input type="text" name="depth"></p>
+        <input type="submit" value="Submit">
+    </form>
+
+
+<body>
+
+
+<div>
+{% if value %}
+        <p>
+            {% for v in value %}
+           {{ v }} 
+            {% endfor %}
+        </p>
+    {% endif %}
+</div>
+
+
+
+

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  
+  <head data-gwd-animation-mode="quickMode">
+    <title>searchengine</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="generator" content="Google Web Designer 1.0.3.0115">
+    <style type="text/css">
+      html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0px;
+      }
+      body {
+        background-color: transparent;
+        -webkit-transform: perspective(1400px) matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        -webkit-transform-style: preserve-3d;
+      }
+      .gwd-h1-u5fq {
+        background-image: none;
+        -webkit-transform: translate3d(273px, 11px, 0px);
+        -webkit-transform-style: preserve-3d;
+      }
+      .gwd-form-xzqq {
+        -webkit-transform-origin: 151px 100px 0px;
+        -webkit-transform: matrix3d(0.9987665531, 0, -0.0496525167, 0, 0, 1, 0, 0, 0.0496525167, 0, 0.9987665531, 0, 290, 1, 0, 1);
+        -webkit-transform-style: preserve-3d;
+      }
+      .gwd-p-twnj {
+        -webkit-transform: translate3d(396.37px, 0.47px, -19.7px);
+        -webkit-transform-style: preserve-3d;
+      }
+      .gwd-input-5u3f {
+        -webkit-transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        -webkit-transform-style: preserve-3d;
+      }
+      .gwd-p-jdu1 {
+        -webkit-transform: translate3d(175.01px, 1.48px, -8.7px);
+        -webkit-transform-style: preserve-3d;
+      }
+    </style>
+  </head>
+  
+  <body>
+     <h1 class="gwd-h1-u5fq">SIMPLE SEARCH ENGINE</h1>
+{% if errors %}
+    <ul class="">{% for error in errors %}
+      <li class="">{{ error }}</li>{% endfor %}</ul>{% endif %}
+    <form action="" method="post" class="gwd-form-xzqq">{% csrf_token %}
+      <p class="gwd-p-twnj">Seed page:
+        <input type="text" name="seed" class="gwd-input-5u3f">
+      </p>
+      <p class="gwd-p-jdu1">maximum pages:
+        <input type="text" name="pages">
+      </p>
+      <p class="">maximum depth
+        <input type="text" name="depth">
+      </p>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+
+</html>

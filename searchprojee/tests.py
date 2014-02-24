@@ -1,0 +1,3 @@
+import indexbookcreator
+
+indexbookcreator.indexbook()
