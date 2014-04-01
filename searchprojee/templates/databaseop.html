@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<title>DJANGO SEARCH ENGINE</title>
+		{% load staticfiles %}
+		<link href="{% static "searchprojee/styles/end-screen.css" %}" rel="stylesheet" type="text/css">
+		<script src="{% static "searchprojee/scripts/jquery.js" %}"></script>
+		<script>
+			// We'll use a script to set the class to apply
+			$(document).ready(function(){
+				$(".face ul li a").click(function(){
+					parentid = $(this).parents("div").attr("id");
+					href=$(this).attr("href");
+					switch(parentid) {
+						case "face2":
+							if (href=="#face3") 
+								$("#cube").addClass("rotateright");
+							else
+								$("#cube").addClass("rotateleft");
+							break;
+						default:
+							$("#cube").removeClass("rotateleft").removeClass("rotateright");
+							break;
+					}
+					return false;
+				});
+			});
+		</script>
+	</head>
+	<body style="height: 1427px">
+		<div id="container">
+			<div id="cube">
+				<div class="face" id="face1">
+					<h2>SEARCH RESULTS </h2>
+					<p>&nbsp;</p>
+					<div style="border : solid 2px #ff0000; background : #A32F26; color : #ffffff; padding : 4px; width : 280px; height : 115px; overflow : auto; ">
+
+<h2>RANK</h2>
+					{% if rank %}
+        <p style="width: 241px">
+            {% for v in rank %}
+           {{ v }} 
+            {% endfor %}
+        </p>
+    {% endif %} </div><h2> CRAWLING TIME AND RANKING TIME</h2>
+    <div style="border : 2px solid #000000; background : #A32F26; color : #ffffff; padding : 4px; width : 280px; height : 115px; overflow : auto; ">
+
+
+					Crawling Time:{{time}}<br>Ranking Time:&nbsp;&nbsp; 
+					{{rank_time}} <br> </div>
+					<ul>
+						<li><a href="#face2" title="Click here to ...">Home</a></li>
+					</ul>
+					
+				</div>
+				<div class="face" id="face2">
+					<h2>DATABASE OPERATION</h2>
+					<form action="" method="post" contenteditable="false">
+        {% csrf_token %}
+        <p>Lookup                     :
+		<input type="text" name="lookup_keyword" style="width: 166px; height: 34px"></p>
+		<p> Fetch from Database:<input  name="Radio1" type="radio" value="fetchdb">
+						
+						<input type="submit" value="SEARCH">
+        </form>					
+					<div style="border : 2px solid #000000; background : #939F24; color : #ffffff; padding : 4px; width : 409px; height : 233px; overflow : auto;">
+
+
+					{% if value %}
+        <p style="width: 241px">
+            {% for v in value %}
+           {{ v }} 
+            {% endfor %}
+        </p>
+    {% endif %} <br> {% if len_index %}
+    Length of index is {{len_index}}
+    Lookup results:{{ lk_res }}
+    
+    {% endif %}
+    </div>
+					
+					
+				<div class="face" id="face3">
+				<h2>SEARCH ENGINE</h2>
+					<form method="post" style="height: 33px" action="http://localhost:8000/indexbook">
+						
+			   		 {% csrf_token %}<input name="Submit1" type="submit" value="VISUALIZE INDEX" />
+					</form>
+					{% if errors %}
+        <ul>
+            {% for error in errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}<br>
+					<div style="border : 2px solid #000000; background : #939F24; color : #ffffff; padding : 4px; width : 409px; height : 233px; overflow : auto;">
+
+
+					{% if value %}
+        <p style="width: 241px">
+            {% for v in value %}
+           {{ v }} 
+            {% endfor %}
+        </p>
+    {% endif %} <br> {% if len_index %}
+    Length of index is {{len_index}}
+    Lookup results:{{ lk_res }}
+    
+    {% endif %}
+    </div>
+					<ul>
+						<li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="#face1" title="Click here to ...">More details</a></li>
+						<li>&nbsp;&nbsp;
+						<a href="#face3" title="Click here to ...">Search here</a></li>
+					</ul>
+				</div>
+					<ul>
+						<li><a href="#face2" title="Click here to ...">Home</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

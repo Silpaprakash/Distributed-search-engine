@@ -1,12 +1,19 @@
 from django.shortcuts import render
-
 from django.http import HttpResponse
-
 from django.template.loader import get_template
-
 from django.template import Context
+from py2neo import neo4j
+from py2neo import node, rel
+from django.core.mail import send_mail
+from django.http import HttpResponseRedirect, HttpResponse
+from django.template import Template
+from models import *
+from indexbookcreator import *
+from tagcloudcreator import *
+from django.db import *
 
 
+graph_db = neo4j.GraphDatabaseService()
 import urllib
 import re
 import time
@@ -21,6 +28,7 @@ def get_page(url):
        
     except:
        return ""
+
 
 def get_next_url(page):
     start_link = page.find('<a href=')
@@ -61,7 +69,8 @@ def add_page_to_index(index, url, content):
         
      
 def add_to_index(index, keyword, url):
-    if  not isvalid(keyword) and  not iscommon(keyword):
+    keyword=keyword.lower()
+    if  not isvalid(keyword) and  (not iscommon(keyword)) and len(keyword)>2:
         if keyword in index and not isduplicate(keyword,index,url):
             
             index[keyword].append(url)
@@ -76,6 +85,7 @@ def isvalid(test_str):
     else:
         return False
 
+
 def isduplicate(keyword,index,url): 
     if url in index[keyword]:
         return True
@@ -83,24 +93,21 @@ def isduplicate(keyword,index,url):
 
 
             
-
-
 def Look_up(index, keyword): 
     if keyword in index:
         return index[keyword]
     else:
         return None
 
+
 def compute_ranks(graph):
     start_time=time.clock()
     d = 0.8 
     numloops = 10
-    
     ranks = {}
     npages = len(graph)
     for page in graph:
         ranks[page] = 1.0 / npages
-    
     for i in range(0, numloops):
         newranks = {}
         for page in graph:
@@ -110,8 +117,6 @@ def compute_ranks(graph):
                    newrank+=d*ranks[p]/len(graph[p])
             newranks[page] = newrank
         ranks = newranks
-    
-    
     return ranks,time.clock()-start_time
 
 
@@ -124,7 +129,7 @@ def profile(index):
             return None
 
 def iscommon(keyword):
-    common=['the','be','and','of','a','in','to','have','to','it','I','that','for','you','he','with','there','is','was','me']
+    common=['the','be','and','of','a','in','to','have','to','it','I','that','for','you','he','with','on','do','say','this','they','at','but','we','his','from','that','not',"n't",'by','she','or','as','what','go','their','can','who','get','if','would','her','all','my','make','about','know','will','as','up','one','time','there']
     if keyword in common:
         return True
     return False
@@ -138,6 +143,7 @@ def best_rank(rank):
             bestkey=key
             maxi=rank[key]
     return key,rank[bestkey]
+
 def sortprofile(index):
     max=0
     for key in index:
@@ -153,7 +159,88 @@ def sortprofile(index):
                 if count>=10:
                     break
         length-=1    
+
+def Similar_Keyword_Search(index):
+        neo4j_insert_time=time.clock()
+        ind_1={}
+        ind_2={}
+        politics_new=[]
+        sports_new=[]
+        google_new=[]
+        news_new=[]
+        others=[]
+
+        politics_array=['CPI','Communist','votes','cash','win','Card','ministry','India','Products','Party','Shinde','AP','Congress','seat','Corruption','Sabha','BJP','AAP','BSP','election','vote','elects']
+        prgm_array=['C','function','search','new','Java','C++','C#','PHP','Python','Javascript','Ruby','Perl','Pascal','MATLAB','PL/SQL','Lisp','Visual Basic']
+        #google_array=['function', 'search', 'removed', 'from', 'solid', 'offered', 'else']
+        sports_array=['cricket','tennis','South','directors','rules','Games','instructions','football','Chennai','captain','team','New','Amazon','coach','match','hockey','badminton','sachin','batsmen','ball','wicket','bowler','umpire','goal','kickoff','olympics','fifa']
+        news_array=['india','state','international','Smartphone','TV','centre','sports','cash','minister','Group','Institute','issues','social','register','People','climate','advertisement']
+        key=index.keys()
+        #print key
+        for keyword in key:
+            if keyword in politics_array:
+                politics_new.append(keyword)
+            if keyword in sports_array:
+                sports_new.append(keyword)
+            if keyword in news_array:
+                news_new.append(keyword)
+            else:
+                others.append(keyword)
+
+        f=open("index_1.txt","w")
         
+        print politics_new
+        for i in politics_new:
+            f.write(i+"\n")
+        print "****************************************************"
+        insert_data1(politics_new,index)
+
+
+        print sports_new
+        for i in sports_new:
+            f.write(i+"\n")
+        print "****************************************************"
+        insert_data1(sports_new,index)
+
+        print news_new
+        for i in news_new:
+            f.write(i+"\n")
+        print "****************************************************"
+        insert_data1(news_new,index)
+        
+
+
+        print "****************************************************"
+        insert_data1(others[0:20],index)
+        f.close()
+        neo4j_insert_time=time.clock()-neo4j_insert_time
+        return neo4j_insert_time
+       
+def insert_data1(li,index):
+        f=open("C:\myprojee\\file.txt","w")
+        data_array=[]
+        a=[]
+        count=1
+        i=0
+        j=1
+        if len(li)>2:
+            for key in li:
+                a.append(key)
+                #print key," " ,index[key]
+            database_nodes=graph_db.create(
+                node({"Keyword":"PARENT"}))
+            for key in li:
+                database_nodes1=graph_db.create(
+                node({"Keyword":key,'URL':index[key]}),
+                rel(database_nodes[0], "LINKS",0))
+                count+=1
+                if count == len(li):
+                    break
+                print database_nodes1
+                f.write(str(database_nodes1)+"\n")
+                
+        f.close()
+                 
         
     
         
@@ -181,19 +268,21 @@ def crawl_web(seed,max_pages,max_depth):
     total_crawling_time=time.clock()-start_time        
     return index,total_crawling_time,graph
 
+    
 
 
-from django.core.mail import send_mail
-from django.http import HttpResponseRedirect, HttpResponse
-from django.shortcuts import render
-from django.template import Template,Context
-from indexbookcreator import *
-from models import *
+
+
+
+
+
+
+
 def contact(request):
-    f = open('C:\myprojee\searchprojee\myfile','w')
-    
+    f=open('C:\myprojee\searchprojee\myfile.txt','w')
+    key_write=open('C:\myprojee\searchprojee\keywords','w')
     errors = []
-    
+    lookup_res=""
     if request.method == 'POST':
         if not request.POST.get('seed', ''):
             errors.append('Enter a seed page.')
@@ -201,29 +290,47 @@ def contact(request):
             errors.append('Enter a maximum depth.')
         if not request.POST.get('pages'):
             errors.append('Enter a maximum pages')
+        if not request.POST.get('lookup_keyword'):
+            errors.append('Enter a lookup keyword')
+        
         if not errors:
           try:
-            i,crawl_time,graph=crawl_web(
+            if request.POST.get('Radio1')=='bs':
+                #print request.POST.get('Radio1')
+                i,crawl_time,graph=crawl_web(
                 request.POST['seed'],
                 int(request.POST['pages']),
                 int(request.POST['depth']),
             )
+            
+            
+            lookup_res=str(index_tbl.objects.filter(key__startswith=str(request.POST['lookup_keyword'])))
+            if index_tbl.objects.filter(key__startswith=str(request.POST['lookup_keyword'])==0):
+                lookup_res+=str(Look_up(i,str(request.POST['lookup_keyword'])))
             ranks,ranking_time=compute_ranks(graph)
             stri =""
             rank=""
             for keyword in  i:
                 p=index_tbl(key=keyword,value=i[keyword])
+                
                 p.save()
+                
                 f.write(keyword+" ")
                 f.write(str(i[keyword][0])+"\n")
+                key_write.write(keyword+"\n")
                 stri+=keyword+ "        "+str(i[keyword])
             f.close()
-            #execfile("C:\myprojee\searchprojee\indexbookcreator.py")
+            key_write.close()
+            indexbook(i)
             
+            Similar_Keyword_Search(i)
+            createtagcloud(i)
+            #execfile("C:\myprojee\searchprojee\indexbookcreator.py")
+            length_index=len(i)
             for key in  ranks:
                 rank+=key+ "        "+str(ranks[key])
-            indexbook()
-            return render(request, 'contact_form.html',{'value': i,'rank': rank ,'time': crawl_time, 'rank_time':ranking_time})
+            
+            return render(request, 'contact_form.html',{'value': i,'rank': rank ,'time': crawl_time, 'rank_time':ranking_time,'len_index':length_index,'lk_res':lookup_res})
           except Exception, err: 
             return HttpResponse(str(err))
     return render(request, 'contact_form.html',
@@ -232,10 +339,117 @@ def contact(request):
 
 
 
+def indexbk(request):
+    data=""
+    return render(request, 'indexbook.html', data)
+
+def dataoperations(request):
+    return render(request, 'databaseop.html', data)
 
 
+def tagcloudview(request):
+    data=""
+    return render(request, 'tagcloud.html', data)
+
+def stattable(request):
+    data=""
+    return render(request, 'stat.html', data)
+def sqlite_insert(index):
+    sqlite_insert_time=time.clock()
+    for keyword in  index:
+        s=index_tbl.objects.filter(key=keyword)
+        if s.count()==0:
+            p=index_tbl(key=keyword,value=index[keyword])
+            p.save()
+    sqlite_insert_time=time.clock()-sqlite_insert_time
+    return sqlite_insert_time 
 
 
+import subprocess
+
+def bootstrap(request):
+    f=open('C:\myprojee\searchprojee\myfile.txt','w')
+    key_write=open('C:\myprojee\searchprojee\keywords','w')
+    errors = []
+    lookup_res=""
+    neo4j_insert_time=0.0
+    sqlite_insert_time=0.0
+    if request.method == 'POST':
+        if request.POST.get('lookup_keyword') and not request.POST.get('seed', '') and not request.POST.get('depth', '') and not request.POST.get('pages'):
+            lookup_res=str(index_tbl.objects.filter(key__startswith=str(request.POST['lookup_keyword'])).distinct())
+            #lookup_res+="<br><br><br><br>"
+            
+            return render(request, 'bootstrap.html',{'lk_res':lookup_res})
+        if request.POST.get('seed', '') and  request.POST.get('depth', '') and request.POST.get('pages'):
+          try:
+            if request.POST.get('Radio1')=='bs':
+                #print request.POST.get('Radio1')
+                i,crawl_time,graph=crawl_web(
+                request.POST['seed'],
+                int(request.POST['pages']),
+                int(request.POST['depth']),
+            )
+                if request.POST.get('lookup_keyword'):
+                    lookup_res=str(index_tbl.objects.filter(key__startswith=str(request.POST['lookup_keyword'])).distinct())
+                    if len(lookup_res)==0:
+                        lookup_res+=str(Look_up(i,str(request.POST['lookup_keyword'])))
+                ranks,ranking_time=compute_ranks(graph)
+                stri =""
+                rank=""
+                if request.POST.get('database1')=="sql":
+                    sqlite_insert_time=sqlite_insert(i)
+                    #sqlite_insert_time=time.clock()-sqlite_insert_time
+                f.close()
+                key_write.close()
+                indexbook(i)
+                if request.POST.get('database2')=="neo":
+                    neo4j_insert_time=Similar_Keyword_Search(i)
+                createtagcloud(i)
+            #execfile("C:\myprojee\searchprojee\indexbookcreator.py")
+                length_index=len(i)
+                for key in  ranks:
+                    rank+=key+ "        "+str(ranks[key])
+                return render(request, 'bootstrap.html',{'value': i,'rank': rank ,'time': crawl_time, 'rank_time':ranking_time,'sql_time':sqlite_insert_time,'neo4j_time':neo4j_insert_time,'len_index':length_index,'lk_res':lookup_res})
+
+            elif request.POST.get('Radio1')=='ps':
+                noofpros= str(request.POST['processor'])
+                lookup_res=""
+                console_index=""
+                li=['python','C:\\myprojee\\searchprojee\\parallelcode.py',"-n",noofpros,"-m",str(request.POST['pages']),"-d",str(request.POST['depth']),"-s",str(request.POST['seed'])]
+                p1 = subprocess.Popen(li, shell=False, stdout=subprocess.PIPE)
+                
+                output = p1.communicate()
+                f=open("C:\\myprojee\\searchprojee\\consoli_index.txt","r").read()
+                #print rank_read
+                index=eval(f)
+                if request.POST.get('database1')=="sql":
+                    sqlite_insert_time=sqlite_insert(index)
+                if request.POST.get('lookup_keyword'):
+                    lookup_res=str(index_tbl.objects.filter(key__startswith=str(request.POST['lookup_keyword'])).distinct())
+                if len(lookup_res)==0:
+                    lookup_res+=str(Look_up(index,str(request.POST['lookup_keyword'])))
+                indexbook(index)
+                if request.POST.get('database2')=="neo":
+                    neo4j_insert_time=Similar_Keyword_Search(index)
+                createtagcloud(index)
+                #print console_index
+                print output
+                rank=open("C:\\myprojee\\searchprojee\\consoli_rank.txt","r").read()
+                
+                return render(request, 'bootstrap.html',{'rank':rank,'value':index,'parallel_time': output,'lk_res':lookup_res,'sql_time':sqlite_insert_time,'neo4j_time':neo4j_insert_time})
+            elif request.POST.get('Radio1')=='hs':
+                hadoop_index=open("C:\\Users\\$ivaram\\Dropbox\\myprojee\\Hadoop_Remya\\index.txt","r").read()
+                index=eval(hadoop_index)
+                sqlite_insert_time=sqlite_insert(index)
+                neo4j_insert_time=Similar_Keyword_Search(index)
+                
+                rank=open("C:\\Users\\$ivaram\\Dropbox\\myprojee\\Hadoop_Remya\\ranks.txt","r").read()
+                return render(request, 'bootstrap.html',{'value':index,'rank':rank,'sql_time':sqlite_insert_time,'neo4j_time':neo4j_insert_time})
+            
+          except Exception, err: 
+            return HttpResponse(str(err))
+    return render(request, 'bootstrap.html',
+        {'errors': errors})
 
 
 

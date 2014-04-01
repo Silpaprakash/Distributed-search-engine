@@ -1,6 +1,6 @@
-def indexbook():
+def indexbook(index):
         import time
-        p=open("index.html","w")
+        p=open('C:\\myprojee\\searchprojee\\templates\indexbook.html','w')
         p.write("""<!DOCTYPE html>
 <html lang="en" class="no-js demo-1">
 	<head>
@@ -11,12 +11,13 @@ def indexbook():
 		<meta name="description" content="Bookblock: A Content Flip Plugin - Demo 1" />
 		<meta name="keywords" content="javascript, jquery, plugin, css3, flip, page, 3d, booklet, book, perspective" />
 		<meta name="author" content="Codrops" />
+		{% load staticfiles %}
 		<link rel="shortcut icon" href="../favicon.ico"> 
-		<link rel="stylesheet" type="text/css" href="css/default.css" />
-		<link rel="stylesheet" type="text/css" href="css/bookblock.css" />
+		<link rel="stylesheet" type="text/css" href="{% static "searchprojee/css/default.css" %}" />
+		<link rel="stylesheet" type="text/css" href="{% static "searchprojee/css/bookblock.css" %}" />
 		<!-- custom demo style -->
-		<link rel="stylesheet" type="text/css" href="css/demo1.css" />
-		<script src="js/modernizr.custom.js"></script>
+		<link rel="stylesheet" type="text/css" href="{% static "searchprojee/css/demo1.css" %}" />
+		<script src="{% static "searchprojee/js/modernizr.custom.js" %}"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -27,15 +28,16 @@ def indexbook():
 			<div class="main clearfix">
 				<div class="bb-custom-wrapper">
 					<div id="bb-bookblock" class="bb-bookblock">""")
-        ins=open("myfile","r")
-        for line in ins:
+        #ins=open("myfile.txt","r")
+        for key in index:
                 p.write("""<div class="bb-item">
 
 							<a href=\"""")
-                word=line.split()
-                p.write(word[1])
+                #word=line.split()
+                p.write(str(index[key]))
                 p.write(""""><h1>""")
-                p.write(word[0])
+                #p.write(word[0])
+                p.write(str(key))
                 p.write("""</h1></a>
 
 							
@@ -51,8 +53,8 @@ def indexbook():
 			</div>
 		</div><!-- /container -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-		<script src="js/jquerypp.custom.js"></script>
-		<script src="js/jquery.bookblock.js"></script>
+		<script src="{% static "searchprojee/js/jquerypp.custom.js" %}"></script>
+		<script src="{% static "searchprojee/js/jquery.bookblock.js" %}"></script>
 		<script>
 			var Page = (function() {
 				
@@ -138,9 +140,8 @@ def indexbook():
 		</script>
 	</body>
 </html>""")
-        ins.close()
+        #ins.close()
         p.close()
 
-indexbook()
 
 

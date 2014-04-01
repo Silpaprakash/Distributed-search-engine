@@ -1,0 +1,1 @@
+{'http://www.micromaxonline.com/': 0.07134367191730605, 'http://www.micromaxmobile.lk/': 0.07134367191730605, 'http://micromaxinfo.com/ru/': 0.07134367191730605}

@@ -9,6 +9,11 @@ urlpatterns = patterns('',
     # url(r'^blog/', include('blog.urls')),
     url(r'^crawl/', 'searchprojee.views.crawl_web'),
     url(r'^crawlweb/', 'searchprojee.views.crawl_web_template'),
-    url(r'^sivaram$', 'searchprojee.views.contact'),
+    url(r'^$', 'searchprojee.views.contact'),
+    url(r'^data$', 'searchprojee.views.dataoperations'),
+    url(r'^tag$', 'searchprojee.views.tagcloudview'),
+    url(r'^bootstrap$', 'searchprojee.views.bootstrap'),
+    url(r'^stat$', 'searchprojee.views.stattable'),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^indexbook$', 'searchprojee.views.indexbk')                   
 )

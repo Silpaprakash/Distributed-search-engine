@@ -1,0 +1,370 @@
+<!doctype html>
+<html>
+<head>
+
+
+
+<style type="text/css">
+.btn-default,
+.btn-primary,
+.btn-success,
+.btn-info,
+.btn-warning,
+.btn-danger {
+    -webkit-box-shadow: 0px 3px 0px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow:    0px 3px 0px rgba(0, 0, 0, 0.3);
+    box-shadow:         0px 3px 0px rgba(0, 0, 0, 0.3);
+}
+
+.btn-default:active,
+.btn-primary:active,
+.btn-success:active,
+.btn-info:active,
+.btn-warning:active,
+.btn-danger:active {
+    margin-top: 3px;
+    margin-bottom: -3px;
+}
+.clickable
+{
+    cursor: pointer;
+}
+
+.clickable .glyphicon
+{
+    background: rgba(0, 0, 0, 0.15);
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 4px
+}
+
+.panel-heading span
+{
+    margin-top: -23px;
+    font-size: 15px;
+    margin-right: -9px;
+}
+a.clickable { color: inherit; }
+a.clickable:hover { text-decoration:none; }
+
+#wrap{
+background-image: -ms-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Mozilla Firefox */ 
+background-image: -moz-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Opera */ 
+background-image: -o-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* Webkit (Safari/Chrome 10) */ 
+background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #FFFFFF), color-stop(1, #D3D8E8));
+/* Webkit (Chrome 11+) */ 
+background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #D3D8E8 100%);
+/* W3C Markup, IE10 Release Preview */ 
+background-image: linear-gradient(to bottom, #FFFFFF 0%, #D3D8E8 100%);
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
+legend{
+	color:#141823;
+	font-size:25px;
+	font-weight:bold;
+}
+.signup-btn {
+  background: #79bc64;
+  background-image: -webkit-linear-gradient(top, #79bc64, #578843);
+  background-image: -moz-linear-gradient(top, #79bc64, #578843);
+  background-image: -ms-linear-gradient(top, #79bc64, #578843);
+  background-image: -o-linear-gradient(top, #79bc64, #578843);
+  background-image: linear-gradient(to bottom, #79bc64, #578843);
+  -webkit-border-radius: 4;
+  -moz-border-radius: 4;
+  border-radius: 4px;
+  text-shadow: 0px 1px 0px #898a88;
+  -webkit-box-shadow: 0px 0px 0px #a4e388;
+  -moz-box-shadow: 0px 0px 0px #a4e388;
+  box-shadow: 0px 0px 0px #a4e388;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 10px 20px 10px 20px;
+  border: solid #3b6e22  1px;
+  text-decoration: none;
+}
+
+.signup-btn:hover {
+  background: #79bc64;
+  background-image: -webkit-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -moz-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -ms-linear-gradient(top, #79bc64, #5e7056);
+  background-image: -o-linear-gradient(top, #79bc64, #5e7056);
+  background-image: linear-gradient(to bottom, #79bc64, #5e7056);
+  text-decoration: none;
+}
+.navbar-default .navbar-brand{
+		color:#fff;
+		font-size:30px;
+		font-weight:bold;
+	}
+.form .form-control { margin-bottom: 10px; }
+@media (min-width:768px) {
+	#home{
+		margin-top:50px;
+	}
+	#home .slogan{
+		color: #0e385f;
+		line-height: 29px;
+		font-weight:bold;
+	}
+}
+</style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load staticfiles %}
+
+    <link rel="stylesheet" type="text/css" href="{% static "searchprojee/css/bootstrap.min.css " %}">
+    <title>Search engine</title>
+</head>
+
+<body>
+
+<div class="container" id="wrap">
+	  <div class="row">
+    <a href="http://localhost:8000/stat"> 
+    <button class="btn btn-sm btn-default">STATISTICS TABLE</button></a>
+        <div class="col-md-6 col-md-offset-3">
+            <form action="" method="post" accept-charset="utf-8" class="form" role="form"> {% csrf_token %}  <legend>Search here!!!</legend>
+                    <h4>Search Engine by quad-pro</h4>
+                    <div class="row">
+                        <div class="col-xs-6 col-md-6">
+                            <input type="text" name="seed" value="" class="form-control input-lg" placeholder="Seed Page"  />                        </div>
+                        <div class="col-xs-6 col-md-6">
+                            <input type="text" name="pages" value="" class="form-control input-lg" placeholder="Maximum pages"  />                        </div>
+                    </div>
+
+                    <input type="text" name="depth" value="" class="form-control input-lg" placeholder="Maximum depth"  /> 
+                    <input type="text" name="lookup_keyword" value="" class="form-control input-lg" placeholder="Lookup Keyword(optional)"  />
+                    <input type="text" name="processor" value="" class="form-control input-lg" placeholder="No of processor(only for parallel processing)"  />                                      
+                                                        
+                     <label>search option : </label>                    <label class="radio-inline">
+                        <input type="radio" name="Radio1" value="bs"  />                        Basic search
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="Radio1" value="ps"  />                        parallel search
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="Radio1" value="hs"  />                        Hadoop search
+                    </label>
+                    <br/>
+                    <label>DATABASE OPTIONS : </label> 
+                    <label class="radio-inline">
+                        <input type="radio" name="database1" value="sql"  />                        sqlite3
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="database2" value="neo"  />                        neo4j
+                    </label>
+                    
+                    <br />
+              
+                    <button class="btn btn-lg btn-primary btn-block signup-btn" type="submit">
+                        Search</button>
+
+            </form>          
+          </div>
+</div>            
+</div>
+</div>
+<br>
+
+ <h4>
+        View your search results here</h4>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-primary">
+                <div class="panel-heading clickable">
+                    <h3 class="panel-title">
+                        INDEX</h3>
+                    <span class="pull-right "><i class="glyphicon glyphicon-minus"></i></span>
+                </div>
+                <div class="panel-body">
+                {% if errors %}
+        
+            {% for error in errors %}
+            {{ error }}
+            {% endfor %}
+        
+    {% endif %}
+                {% if value %}
+        
+            {% for v in value %}
+           {{ v }} 
+            {% endfor %}
+        
+    {% endif %} <br> {% if len_index %}
+    Length of index is {{len_index}}
+    {% endif %}
+                   </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-success">
+                <div class="panel-heading clickable">
+                    <h3 class="panel-title">
+                        LOOKUP RESULTS</h3>
+                    <span class="pull-right "><i class="glyphicon glyphicon-minus"></i></span>
+                </div>
+                <div class="panel-body">
+                {{ lk_res }}
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading clickable">
+                    <h3 class="panel-title">
+                        RANK INFO</h3>
+                    <span class="pull-right "><i class="glyphicon glyphicon-minus"></i></span>
+                </div>
+                <div class="panel-body">
+                {% if s %}
+                {{ s }}
+                {% endif %}
+      
+                    {% if rank %}
+        
+            {% for v in rank %}
+           {{ v }} 
+            {% endfor %}
+        
+    {% endif %} </div>
+            </div>
+        </div>
+     <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-info">
+                <div class="panel-heading clickable">
+                    <h3 class="panel-title">
+                        TIME INFO</h3>
+                    <span class="pull-right "><i class="glyphicon glyphicon-minus"></i></span>
+                </div>
+                <div class="panel-body">
+                {% if time %}Crawling Time:{{time}}<br>Ranking Time:&nbsp;&nbsp; 
+          {{rank_time}} {% endif %}
+          {% if parallel_time %}
+          {{parallel_time}}
+          {% endif %}
+          {% if sql_time %}
+          sqlite time:{{sql_time}}
+          neo4j time:{{neo4j_time}}
+          {% endif %}
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+        <div class="col-md-6"><a href="http://localhost:8000/indexbook">
+        <button class="btn btn-lg btn-primary btn-block signup-btn" type="button">
+                        INDEX BOOK</button></a>
+        </div><div class="col-md-6">
+         <a href="http://localhost:8000/tag">               <button class="btn btn-lg btn-primary btn-block signup-btn" type="button">
+                        TAGCLOUD</button><br><br><br></a>
+                        
+
+        </div></div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <script type="text/javascript">$(document).on('click', '.panel-heading span.clickable', function (e) {
+    var $this = $(this);
+    if (!$this.hasClass('panel-collapsed')) {
+        $this.parents('.panel').find('.panel-body').slideUp();
+        $this.addClass('panel-collapsed');
+        $this.find('i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+    } else {
+        $this.parents('.panel').find('.panel-body').slideDown();
+        $this.removeClass('panel-collapsed');
+        $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+    }
+});
+$(document).on('click', '.panel div.clickable', function (e) {
+    var $this = $(this);
+    if (!$this.hasClass('panel-collapsed')) {
+        $this.parents('.panel').find('.panel-body').slideUp();
+        $this.addClass('panel-collapsed');
+        $this.find('i').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+    } else {
+        $this.parents('.panel').find('.panel-body').slideDown();
+        $this.removeClass('panel-collapsed');
+        $this.find('i').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+    }
+});
+$(document).ready(function () {
+    $('.panel-heading span.clickable').click();
+    $('.panel div.clickable').click();
+});
+$(function () {
+    $('.button-checkbox').each(function () {
+
+        // Settings
+        var $widget = $(this),
+            $button = $widget.find('button'),
+            $checkbox = $widget.find('input:checkbox'),
+            color = $button.data('color'),
+            settings = {
+                on: {
+                    icon: 'glyphicon glyphicon-check'
+                },
+                off: {
+                    icon: 'glyphicon glyphicon-unchecked'
+                }
+            };
+
+        // Event Handlers
+        $button.on('click', function () {
+            $checkbox.prop('checked', !$checkbox.is(':checked'));
+            $checkbox.triggerHandler('change');
+            updateDisplay();
+        });
+        $checkbox.on('change', function () {
+            updateDisplay();
+        });
+
+        // Actions
+        function updateDisplay() {
+            var isChecked = $checkbox.is(':checked');
+
+            // Set the button's state
+            $button.data('state', (isChecked) ? "on" : "off");
+
+            // Set the button's icon
+            $button.find('.state-icon')
+                .removeClass()
+                .addClass('state-icon ' + settings[$button.data('state')].icon);
+
+            // Update the button's color
+            if (isChecked) {
+                $button
+                    .removeClass('btn-default')
+                    .addClass('btn-' + color + ' active');
+            }
+            else {
+                $button
+                    .removeClass('btn-' + color + ' active')
+                    .addClass('btn-default');
+            }
+        }
+
+        // Initialization
+        function init() {
+
+            updateDisplay();
+
+            // Inject the icon if applicable
+            if ($button.find('.state-icon').length == 0) {
+                $button.prepend('<i class="state-icon ' + settings[$button.data('state')].icon + '"></i> ');
+            }
+        }
+        init();
+    });
+});
+</script>
+
+</body>
+</html>
